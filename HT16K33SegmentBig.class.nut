@@ -140,7 +140,7 @@ class HT16K33SegmentBig
 		// Puts the number glyph into the specified row, adding a decimal point if required
 
 		if (row < 0 || row > 4 || row == 2) return
-		if (number < 0 || number > 15) return
+		if (number < 0 || number > HT16K33_CHAR_COUNT - 1) return
 
 		_buffer[row] = _digits[number]
 	}
