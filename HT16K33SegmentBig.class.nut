@@ -32,11 +32,11 @@ class HT16K33SegmentBig
 
 		// _buffer stores the character matrix values for each row of the display
 		// Including the center colon character
-        //
-        //  0    1   2   3    4
-        // [ ]  [ ]  .  [ ]  [ ]
-        //  -    -       -    -
-        // [ ]  [ ]  .  [ ]  [ ]
+        	//
+        	//  0    1   2   3    4
+        	// [ ]  [ ]  .  [ ]  [ ]
+        	//  -    -       -    -
+        	// [ ]  [ ]  .  [ ]  [ ]
 
 		_buffer = [0x00, 0x00, 0x00, 0x00, 0x00]
 
@@ -47,6 +47,8 @@ class HT16K33SegmentBig
 			0x5F, 0x7C, 0x58, 0x5E, 0x7B, 0x71,                          // A - F
 			0x00, 0x40                                                   // space, minus sign
 		]
+		
+		init()
 	}
 
 	function init(clearChar = 16, brightness = 15)
