@@ -52,6 +52,13 @@ led.setColon(0x0E)
 led.updateDisplay()
 ```
 
+```squirrel
+// Set the display to .--'--
+led.clearBuffer(17)
+led.setColon(0x18)
+led.updateDisplay()
+```
+
 ### writeChar(*row, charVal*)
 
 To write a character that is not in the character set *(see above)* to a single segment, call *writeChar()* and pass the segment number (0, 1, 3 or 4) and a character matrix value as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of each segment should be illuminated. By default, the decimal point is not lit.
