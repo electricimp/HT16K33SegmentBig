@@ -4,10 +4,10 @@ Hardware driver for [Adafruit 1.2-inch 4-digit, 7-segment LED display](http://ww
 
 The class incorporates its own (limited) character set, accessed through the following codes:
 
-- Digits 0 through 9: codes 0 through 9
-- Characters A through F: codes 10 through 15
-- Space character: code 16
-- Minus character: code 17
+* Digits 0 through 9: codes 0 through 9
+* Characters A through F: codes 10 through 15
+* Space character: code 16
+* Minus character: code 17
 
 ## Class Usage
 
