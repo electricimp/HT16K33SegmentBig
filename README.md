@@ -50,11 +50,8 @@ Call *setColon()* to specify whether the display’s initial and center colon sy
 led.clearBuffer(17)
 led.setColon(0x0E)
 led.updateDisplay()
-```
 
-```squirrel
 // Set the display to .--'--
-led.clearBuffer(17)
 led.setColon(0x18)
 led.updateDisplay()
 ```
