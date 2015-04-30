@@ -40,10 +40,10 @@ led.updateDisplay()
 
 Call *setColon()* to specify whether the display’s initial and center colon symbols are illuminated, and the raised point between the third and fourth characters. The parameter is a value that combines any or all of the following values:
 
-0x02 &ndash; centre colon
-0x04 &ndash; left colon, lower dot
-0x08 &ndash; left colon, upper dot
-0x10 &ndash; decimal point (upper)
+* 0x02 &ndash; centre colon
+* 0x04 &ndash; left colon, lower dot
+* 0x08 &ndash; left colon, upper dot
+* 0x10 &ndash; decimal point (upper)
 
 ```squirrel
 // Set the display to :--:--
