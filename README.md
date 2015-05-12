@@ -9,6 +9,8 @@ The class incorporates its own (limited) character set, accessed through the fol
 * Space character: code 16
 * Minus character: code 17
 
+**To add this library to your project, add** `#require "HT16K33SegmentBig.class.nut:1.0.0"` **to the top of your device code**
+
 ## Class Usage
 
 ### Constructor: HT16K33Segment(*impI2cBus, [i2cAddress]*)
