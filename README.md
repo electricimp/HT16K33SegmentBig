@@ -9,19 +9,32 @@ The class incorporates its own (limited) character set, accessed through the fol
 * Space character: code 16
 * Minus character: code 17
 
-**To add this library to your project, add** `#require "HT16K33SegmentBig.class.nut:1.0.0"` **to the top of your device code**
+From version 1.1.0, the methods *clearBuffer()*, *setColon()*, *writeChar()* and *writeNumber()* return the context object, *this*, allowing them to be chained:
+
+```squirrel
+// Set the display to :--:--
+led.clearBuffer(17)
+    .setColon(0x0E)
+    .updateDisplay();
+```
+
+**To add this library to your project, add** `#require "HT16K33SegmentBig.class.nut:1.1.0"` **to the top of your device code**
 
 ## Class Usage
 
-### Constructor: HT16K33Segment(*impI2cBus, [i2cAddress]*)
+### Constructor: HT16K33Segment(*impI2cBus[, i2cAddress][, debug]*)
 
 To instantiate a HT16K33Segment object pass the I&sup2;C bus to which the display is connected and, optionally, its I&sup2;C address. If no address is passed, the default value, `0x70` will be used. Pass an alternative address if you have changed the display’s address using the solder pads on rear of the LED’s circuit board.
 
 The passed imp I&sup2;C bus must be configured before the HT16K33Segment object is created.
 
+You can also pass `true` into in a third parameter, *debug*, to gain extra debugging information in the log. It defaults to `false`.
+
 ```squirrel
-hardware.i2c89.configure(CLOCK_SPEED_400_KHZ)
-led <- HT16K33Segment(hardware.i2c89)
+#require "HT16K33SegmentBig.class.nut:1.1.0"
+
+hardware.i2c89.configure(CLOCK_SPEED_400_KHZ);
+led <- HT16K33Segment(hardware.i2c89);
 ```
 
 ## Class Methods
@@ -34,8 +47,7 @@ Call *clearBuffer()* to zero the display buffer. If the optional *clearChar* par
 
 ```squirrel
 // Set the display to -- --
-led.clearBuffer(17)
-led.updateDisplay()
+led.clearBuffer(17).updateDisplay();
 ```
 
 ### setColon(*bitValue*)
@@ -50,12 +62,12 @@ Call *setColon()* to specify whether the display’s initial and center colon sy
 ```squirrel
 // Set the display to :--:--
 led.clearBuffer(17)
-led.setColon(0x0E)
-led.updateDisplay()
+    .setColon(0x0E)
+    .updateDisplay();
 
 // Set the display to .--'--
 led.setColon(0x18)
-led.updateDisplay()
+    .updateDisplay();
 ```
 
 ### writeChar(*row, charVal*)
@@ -77,14 +89,13 @@ Calculate character matrix values using the following chart. The segment number 
 
 ```squirrel
 // Display 'SYNC' on the LED
-local letters = [0x6D, 0x6E, 0x00, 0x37, 0x39]
+local letters = [0x6D, 0x6E, 0x00, 0x37, 0x39];
 
-foreach (index, chara in letters)
-{
-  led.writeChar(index, chara, false)
+foreach (index, chrVal in letters) {
+    led.writeChar(index, chrVal, false);
 }
 
-led.updateDisplay()
+led.updateDisplay();
 ```
 
 ### writeNumber(*row, number*)
@@ -94,10 +105,10 @@ To write a number to a single segment, call *writeNumber()* and pass the segment
 ```squirrel
 // Display '42 42' on the LED
 led.writeNumber(0, 4)
-led.writeNumber(1, 2)
-led.writeNumber(3, 4)
-led.writeNumber(4, 2)
-led.updateDisplay()
+    .writeNumber(1, 2)
+    .writeNumber(3, 4)
+    .writeNumber(4, 2)
+    .updateDisplay();
 ```
 
 ### updateDisplay()
