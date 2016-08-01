@@ -1,4 +1,11 @@
 class HT16K33SegmentBig {
+    // Hardware driver for Adafruit 1.2-inch 4-digit, 7-segment LED display based on the Holtek HT16K33 controller.
+    // The LED communicates over any imp I2C bus.
+
+    // Written by Tony Smith (smittytone) 2014-16
+    // Copyright Electric Imp, Inc. 2014-2016.
+    // https://electricimp.com/
+    // Licence: MIT
 
     // HT16K33 registers and HT16K33-specific variables
     static HT16K33_REGISTER_DISPLAY_ON  = "\x81";
