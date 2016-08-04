@@ -13,9 +13,7 @@ From version 1.1.0, the methods *clearBuffer()*, *setColon()*, *writeChar()* and
 
 ```squirrel
 // Set the display to :--:--
-led.clearBuffer(17)
-    .setColon(0x0E)
-    .updateDisplay();
+led.clearBuffer(17).setColon(0x0E).updateDisplay();
 ```
 
 **To add this library to your project, add** `#require "HT16K33SegmentBig.class.nut:1.1.0"` **to the top of your device code**
@@ -49,6 +47,10 @@ Call *clearBuffer()* to zero the display buffer. If the optional *clearChar* par
 // Set the display to -- --
 led.clearBuffer(17).updateDisplay();
 ```
+
+### clearDisplay()
+
+Call *clearDisplay()* to completely wipe the display, including the colon. Unlike *clearBuffer()*, this method can’t be used to set all the segments to a specific character, but it does automatically update the display.
 
 ### setColon(*bitValue*)
 
@@ -89,10 +91,10 @@ Calculate character matrix values using the following chart. The segment number 
 
 ```squirrel
 // Display 'SYNC' on the LED
-local letters = [0x6D, 0x6E, 0x00, 0x37, 0x39];
+local characters = [0x6D, 0x6E, 0x00, 0x37, 0x39];
 
-foreach (index, chrVal in letters) {
-    led.writeChar(index, chrVal, false);
+foreach (index, character in characters) {
+    led.writeChar(index, character, false);
 }
 
 led.updateDisplay();
