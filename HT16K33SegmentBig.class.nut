@@ -1,5 +1,6 @@
 class HT16K33SegmentBig {
-    // Hardware driver for Adafruit 1.2-inch 4-digit, 7-segment LED display based on the Holtek HT16K33 controller.
+    // Hardware driver for Adafruit 1.2-inch 4-digit, 7-segment LED display
+    // based on the Holtek HT16K33 controller.
     // The LED communicates over any imp I2C bus.
 
     // Written by Tony Smith (smittytone) 2014-16
@@ -45,10 +46,10 @@ class HT16K33SegmentBig {
         // _buffer stores the character matrix values for each row of the display
         // Including the center colon character:
         //
-        //    0    1   2   3    4
-        //   [ ]  [ ]  .  [ ]  [ ]
-        //    -    -       -    -
-        //   [ ]  [ ]  .  [ ]  [ ]
+        //     0    1   2   3    4
+        //    [ ]  [ ]     [ ]  [ ]
+        //     -    -   .   -    -
+        //    [ ]  [ ]  .  [ ]  [ ]
 
         _buffer = [0x00, 0x00, 0x00, 0x00, 0x00];
 
@@ -71,9 +72,7 @@ class HT16K33SegmentBig {
         setBrightness(brightness);
 
         // Clear the screen to the chosen character
-        setColon(0x00);
-        clearBuffer(clearChar);
-        updateDisplay();
+        clearDisplay();
     }
 
     function updateDisplay() {
@@ -88,6 +87,10 @@ class HT16K33SegmentBig {
         _led.write(_ledAddress, dataString);
     }
 
+    function clearDisplay() {
+        clearBuffer(16).setColon(0).updateDisplay();
+    }
+
     function clearBuffer(clearChar = 16) {
         // Fills the buffer with a blank character, or the digits[] character matrix whose index is provided
         if (clearChar < 0 || clearChar > HT16K33_CHAR_COUNT - 1) clearChar = HT16K33_BLANK_CHAR;
@@ -98,10 +101,6 @@ class HT16K33SegmentBig {
         _buffer[3] = _digits[clearChar];
         _buffer[4] = _digits[clearChar];
         return this;
-    }
-
-    function clearDisplay(clearChar = 16) {
-        clearBuffer(clearChar).updateDisplay();
     }
 
     function setColon(bitVal = 0) {
@@ -123,23 +122,22 @@ class HT16K33SegmentBig {
         // Bit-to-segment mapping runs clockwise from the top around the outside of the
         // matrix; the inner segment is bit 6:
         //
-        //      0
-        //      _
-        //  5 |   | 1
-        //    |   |
-        //      - <----- 6
-        //  4 |   | 2
-        //    | _ |
-        //      3
-        //
+        //        0
+        //        _
+        //    5 |   | 1
+        //      |   |
+        //        - <----- 6
+        //    4 |   | 2
+        //      | _ |
+        //        3
 
         if (charVal < 0 || charVal > 127) {
             if (_debug) server.error("HT16K33SegmentBig.writeChar() passed out-of-range character value (0-127)");
             return this;
         }
 
-        if (row < 0 || row > 4 || row == 2) {
-            if (_debug) server.error("HT16K33SegmentBig.writeChar() passed out-of-range row value (0, 1, 3, 4)");
+        if (row < 0 || row > 4) {
+            if (_debug) server.error("HT16K33SegmentBig.writeChar() passed out-of-range row value (0-4)");
             return this;
         }
 
@@ -149,8 +147,8 @@ class HT16K33SegmentBig {
 
     function writeNumber(row, number) {
         // Puts the number glyph into the specified row, adding a decimal point if required
-        if (row < 0 || row > 4 || row == 2) {
-            if (_debug) server.error("HT16K33SegmentBig.writeNumber() passed out-of-range row value (0, 1, 3, 4)");
+        if (row < 0 || row > 4) {
+            if (_debug) server.error("HT16K33SegmentBig.writeNumber() passed out-of-range row value (0-4)");
             return this;
         }
 
