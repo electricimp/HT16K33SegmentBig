@@ -59,8 +59,6 @@ class HT16K33SegmentBig {
             0x5F, 0x7C, 0x58, 0x5E, 0x7B, 0x71,                          // A - F
             0x00, 0x40                                                   // space, minus sign
         ];
-
-        init();
     }
 
     function init(clearChar = 16, brightness = 15) {
@@ -88,7 +86,7 @@ class HT16K33SegmentBig {
     }
 
     function clearDisplay() {
-        clearBuffer(16).setColon(0).updateDisplay();
+        clearBuffer().setColon().updateDisplay();
     }
 
     function clearBuffer(clearChar = 16) {
@@ -175,16 +173,30 @@ class HT16K33SegmentBig {
             brightness = 0;
         }
 
+        if (_debug) server.log("Setting brightness to " + brightness);
         brightness = brightness + 224;
+
+        local sbuffer = [0, 0, 0, 0, 0];
+        for (local i = 0 ; i < 5 ; ++i) {
+            sbuffer[i] = _buffer[i];
+        }
+
+        clearDisplay();
 
         // Power cycle the display
         powerDown();
+        imp.sleep(0.1);
         powerUp();
 
         // Write the new brightness value to the HT16K33
         _led.write(_ledAddress, brightness.tochar() + "\x00");
 
         // Restore the current _buffer contents
+
+        for (local i = 0 ; i < 5 ; ++i) {
+            _buffer[i] = sbuffer[i];
+        }
+
         updateDisplay();
     }
 
@@ -195,7 +207,7 @@ class HT16K33SegmentBig {
     }
 
     function powerUp() {
-        if (_debug) server.log("Powering up HT16K33SegmentBig display");
+        if (_debug) server.log("Powering HT16K33SegmentBig display up");
         _led.write(_ledAddress, HT16K33_REGISTER_SYSTEM_ON);
         _led.write(_ledAddress, HT16K33_REGISTER_DISPLAY_ON);
     }
