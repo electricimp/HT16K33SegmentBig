@@ -91,7 +91,10 @@ class HT16K33SegmentBig {
 
     function clearBuffer(clearChar = 16) {
         // Fills the buffer with a blank character, or the digits[] character matrix whose index is provided
-        if (clearChar < 0 || clearChar > HT16K33_CHAR_COUNT - 1) clearChar = HT16K33_BLANK_CHAR;
+        if (clearChar < 0 || clearChar > HT16K33_CHAR_COUNT - 1) {
+            clearChar = HT16K33_BLANK_CHAR;
+            if (_debug) server.error("HT16K33SegmentBig.clearBuffer() passed out-of-range character value (0-16)");
+        }
 
         // Put the clear_character into the buffer except row 2 (colon row)
         _buffer[0] = _digits[clearChar];
