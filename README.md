@@ -22,7 +22,7 @@ led.clearBuffer(17).setColon(0x0E).updateDisplay();
 
 ### Constructor: HT16K33Segment(*impI2cBus[, i2cAddress][, debug]*)
 
-To instantiate a HT16K33Segment object pass the I&sup2;C bus to which the display is connected and, optionally, its I&sup2;C address. If no address is passed, the default value, `0x70` will be used. Pass an alternative address if you have changed the display’s address using the solder pads on rear of the LED’s circuit board.
+To instantiate an HT16K33Segment object pass the I&sup2;C bus to which the display is connected and, optionally, its I&sup2;C address. If no address is passed, the default value, `0x70` will be used. Pass an alternative address if you have changed the display’s address using the solder pads on rear of the LED’s circuit board.
 
 The passed imp I&sup2;C bus must be configured before the HT16K33Segment object is created.
 
@@ -39,7 +39,7 @@ led <- HT16K33Segment(hardware.i2c89);
 
 ### clearBuffer(*[clearChar]*)
 
-Call *clearBuffer()* to zero the display buffer. If the optional *clearChar* parameter is not passed, no characters will be displayed. Pass a character code *(see above)* to zero the display to a specific character.
+Call *clearBuffer()* to zero the display buffer. If the optional *clearChar* parameter is not passed, no characters will be displayed. Pass a character code *(see above)* to zero the display to a specific character, eg. `0` to zero the display.
 
 *clearBuffer()* does not update the display, only its buffer. Call *updateDisplay()* to refresh the LED.
 
@@ -74,7 +74,7 @@ led.setColon(0x18)
 
 ### writeChar(*row, charVal*)
 
-To write a character that is not in the character set *(see above)* to a single segment, call *writeChar()* and pass the segment number (0, 1, 3 or 4) and a character matrix value as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of each segment should be illuminated. By default, the decimal point is not lit.
+To write a character that is not in the character set *(see above)* to a single segment, call *writeChar()* and pass the segment number (0, 1, 3 or 4) and a character matrix value as its parameters. You can also provide a third, optional parameter: a boolean value indicating whether the decimal point to the right of the specified segment should be illuminated. By default, the decimal point is not lit.
 
 Calculate character matrix values using the following chart. The segment number is the bit that must be set to illuminate it (or unset to keep it unlit):
 
@@ -91,10 +91,10 @@ Calculate character matrix values using the following chart. The segment number 
 
 ```squirrel
 // Display 'SYNC' on the LED
-local characters = [0x6D, 0x6E, 0x00, 0x37, 0x39];
+local characters = [0x6D, 0x6E, 0x37, 0x39];
 
 foreach (index, character in characters) {
-    led.writeChar(index, character, false);
+    if (index != 2) led.writeChar(index, character, false);
 }
 
 led.updateDisplay();
