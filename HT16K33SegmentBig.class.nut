@@ -116,7 +116,7 @@ class HT16K33SegmentBig {
     function setColon(colonPattern = 0) {
         // Sets the LED’s colon and decimal point lights
         // Parameter:
-        //   1. An integer indicating which elements to light
+        //   1. An integer indicating which elements to light (OR the values required)
         //      0x00 - no colon
         //      0x02 - centre colon
         //      0x04 - left colon, lower dot
@@ -124,6 +124,11 @@ class HT16K33SegmentBig {
         //      0x10 - decimal point (upper)
         // Returns:
         //   this
+
+        if (colonPattern < 0 || colonPattern > 0x1E) {
+            server.error("HT16K33SegmentBig.setColon() passed out-of-range colon pattern");
+            return this;
+        }
 
         _buffer[LED_COLON_ROW] = colonPattern;
         return this;
