@@ -125,26 +125,12 @@ class HT16K33SegmentBig {
         // Returns:
         //   this
 
-        local values = [0, 2, 4, 8, 16];
-        local match = false;
-        foreach (value in values) {
-            if (value == colonPattern) {
-                match = true;
-                break;
-            }
-        }
-
-        if (!match) {
-            server.error("HT16K33SegmentBig.setColon() passed out-of-range colon pattern");
-            return this;
-        }
-
         _buffer[LED_COLON_ROW] = colonPattern;
         return this;
     }
 
-    function writeChar(digit, patter) {
-        return writeGlyph(digit, patter);
+    function writeChar(digit, pattern) {
+        return writeGlyph(digit, pattern);
     }
 
     function writeGlyph(digit, pattern) {
