@@ -1,4 +1,4 @@
-# HT16K33SegmentBig
+# HT16K33SegmentBig 1.2.0
 
 Hardware driver for [Adafruit 1.2-inch 4-digit, 7-segment LED display](http://www.adafruit.com/products/1270) based on the Holtek HT16K33 controller. The LED communicates over any imp I&sup2;C bus.
 
