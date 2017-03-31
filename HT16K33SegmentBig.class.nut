@@ -1,3 +1,43 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2015-17 Electric Imp
+//
+// SPDX-License-Identifier: MIT
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+// CONSTANTS
+// HT16K33 registers and HT16K33-specific variables
+const HT16K33_REGISTER_DISPLAY_ON  = "\x81";
+const HT16K33_REGISTER_DISPLAY_OFF = "\x80";
+const HT16K33_REGISTER_SYSTEM_ON   = "\x21";
+const HT16K33_REGISTER_SYSTEM_OFF  = "\x20";
+const HT16K33_DISPLAY_ADDRESS      = "\x00";
+const HT16K33_I2C_ADDRESS = 0x70;
+const HT16K33_BLANK_CHAR = 16;
+const HT16K33_MINUS_CHAR = 17;
+const HT16K33_CHAR_COUNT = 17;
+
+// Display specific constants
+const LED_MAX_ROWS = 4;
+const LED_COLON_ROW = 2;
+
 class HT16K33SegmentBig {
     // Hardware driver for Adafruit 1.2-inch 4-digit, 7-segment LED display
     // based on the Holtek HT16K33 controller.
@@ -8,22 +48,7 @@ class HT16K33SegmentBig {
     // https://electricimp.com/
     // Licence: MIT
 
-    // HT16K33 registers and HT16K33-specific variables
-    static HT16K33_REGISTER_DISPLAY_ON  = "\x81";
-    static HT16K33_REGISTER_DISPLAY_OFF = "\x80";
-    static HT16K33_REGISTER_SYSTEM_ON   = "\x21";
-    static HT16K33_REGISTER_SYSTEM_OFF  = "\x20";
-    static HT16K33_DISPLAY_ADDRESS      = "\x00";
-    static HT16K33_I2C_ADDRESS = 0x70;
-    static HT16K33_BLANK_CHAR = 16;
-    static HT16K33_MINUS_CHAR = 17;
-    static HT16K33_CHAR_COUNT = 17;
-
-    // Display specific constants
-    static LED_MAX_ROWS = 4;
-    static LED_COLON_ROW = 2;
-
-    static version = [1,2,0];
+    static VERSION = "1.2.0";
 
     // Class properties; null for those defined in the Constructor
     _buffer = null;
@@ -39,8 +64,7 @@ class HT16K33SegmentBig {
         //   3. Boolean to invoke extra debug log information (default: false)
 
         if (i2cBus == null || i2cAddress == 0) {
-            server.error("HT16K33SegmentBig requires a valid imp I2C object and non-zero I2C address");
-            return null;
+            throw "HT16K33SegmentBig requires a valid imp I2C object and non-zero I2C address";
         }
 
         _led = i2cBus;
@@ -62,8 +86,6 @@ class HT16K33SegmentBig {
             0x5F, 0x7C, 0x58, 0x5E, 0x7B, 0x71,                          // A - F
             0x00, 0x40                                                   // space, minus sign
         ];
-
-        init();
     }
 
     function init(character = 16, brightness = 15) {
@@ -85,7 +107,7 @@ class HT16K33SegmentBig {
         // string and writes it to the HT16K33 via I2C
         local dataString = HT16K33_DISPLAY_ADDRESS;
 
-        for (local i = 0 ; i < 5 ; ++i) {
+        for (local i = 0 ; i < 5 ; i++) {
             dataString = dataString + _buffer[i].tochar() + "\x00";
         }
 
@@ -124,7 +146,6 @@ class HT16K33SegmentBig {
         //      0x10 - decimal point (upper)
         // Returns:
         //   this
-
         if (colonPattern < 0 || colonPattern > 0x1E) {
             server.error("HT16K33SegmentBig.setColon() passed out-of-range colon pattern");
             return this;
@@ -157,7 +178,6 @@ class HT16K33SegmentBig {
         //
         // Returns:
         //   this
-
         if (pattern < 0 || pattern > 127) {
             server.error("HT16K33SegmentBig.writeGlyph() passed out-of-range character value (0-127)");
             return this;
@@ -179,7 +199,6 @@ class HT16K33SegmentBig {
         //   2. The number to be displayed (0 - 15 for '0' - 'F')
         // Returns:
         //   this
-
         if (digit < 0 || digit > LED_MAX_ROWS || digit == 2) {
             server.error("HT16K33SegmentBig.writeNumber() passed out-of-range digit number (0-1, 3-4)");
             return this;
@@ -198,7 +217,6 @@ class HT16K33SegmentBig {
         // Set the LED brightness
         // Parameters:
         //   1. Integer specifying the brightness (0 - 15; default 15)
-
         if (brightness > 15) {
             if (_debug) server.log("HT16K33SegmentBig.setBrightness() passed out-of-range brightness value (0-15)");
             brightness = 15;
@@ -221,7 +239,6 @@ class HT16K33SegmentBig {
         //    1. Flash rate in Herz. Must be 0.5, 1 or 2 for a flash, or 0 for no flash
         // Returns:
         //    Nothing
-
         local values = [0, 2, 1, 0.5];
         local match = -1;
         foreach (i, value in values) {

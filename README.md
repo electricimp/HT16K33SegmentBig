@@ -51,6 +51,10 @@ led <- HT16K33Segment(hardware.i2c89);
 
 ## Class Methods
 
+### init(*[character][, brightness]*)
+
+Call *init()* to bring up the display. All parameters are optional. The first is a character to display across all the digits; the default is no character. The *brightness* parameters is a value between 0 (low) and 15 (high); the default value is 15.
+
 ### clearBuffer(*[character]*)
 
 Call *clearBuffer()* to zero the internal display buffer. If the optional *character* parameter is not passed, no characters will be displayed. Pass a character code *(see [above](#characters))* to zero the display to a specific character.
@@ -70,10 +74,10 @@ Call *clearDisplay()* to completely wipe the display, including the colon. Unlik
 
 Call *setColon()* to specify whether the display’s initial and center colon symbols are illuminated, and the raised point between the third and fourth characters. The parameter is an integer that combines any or all of the following values:
 
-* 0x02 &ndash; centre colon
-* 0x04 &ndash; left colon, lower dot
-* 0x08 &ndash; left colon, upper dot
-* 0x10 &ndash; decimal point (upper)
+* 0x02 &mdash; centre colon
+* 0x04 &mdash; left colon, lower dot
+* 0x08 &mdash; left colon, upper dot
+* 0x10 &mdash; decimal point (upper)
 
 ```squirrel
 // Set the display to :--:--
@@ -133,7 +137,7 @@ Call *updateDisplay()* after changing any or all of the display buffer contents 
 
 ### setBrightness(*[brightness]*)
 
-To set the LED’s brightess (its duty cycle), call *setBrightness()* and pass an integer value between 0 (dim) and 15 (maximum brightness). If you don’t pass a value, the method will default to maximum brightness.
+To set the LED’s brightness (its duty cycle), call *setBrightness()* and pass an integer value between 0 (dim) and 15 (maximum brightness). If you don’t pass a value, the method will default to maximum brightness.
 
 ### setDisplayFlash(*flashRate*)
 
